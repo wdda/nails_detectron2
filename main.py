@@ -26,6 +26,8 @@ cfg.DATASETS.TEST = ("nail/test",)
 nail_metadata_test = MetadataCatalog.get(cfg.DATASETS.TEST[0])
 nail_metadata_test.set(thing_classes=["nail"])
 
+local_pre_train = "model_0004999.pth"
+
 
 def get_data(folder):
     return dataset.DataSet(folder).set()
@@ -37,7 +39,8 @@ for d in ["train", "test"]:
 
 
 def train():
-    cfg.MODEL.WEIGHTS = "detectron2://COCO-Detection/faster_rcnn_R_101_FPN_3x/137851257/model_final_f6e8b1.pkl"
+    # cfg.MODEL.WEIGHTS = "detectron2://COCO-Detection/faster_rcnn_R_101_FPN_3x/137851257/model_final_f6e8b1.pkl"
+    cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, local_pre_train)
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     trainer = DefaultTrainer(cfg)
     trainer.resume_or_load(resume=False)
@@ -45,7 +48,7 @@ def train():
 
 
 def test_img():
-    cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")
+    cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, local_pre_train)
     dataset_dicts = get_data("test")
 
     for d in random.sample(dataset_dicts, 3):
@@ -53,7 +56,7 @@ def test_img():
 
 
 def test_one_img(img_path):
-    cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")
+    cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, local_pre_train)
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7
     im = cv2.imread(img_path)
 
@@ -77,7 +80,7 @@ def test_one_img(img_path):
 
 
 def test_video():
-    cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")
+    cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, local_pre_train)
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7
 
     # Open video file
@@ -104,4 +107,4 @@ def test_video():
 
 
 # test_one_img('test3.jpg')
-train()
+test_video()
