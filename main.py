@@ -20,8 +20,8 @@ def get_data(folder):
     return dataset.DataSet(folder).set()
 
 
-datasetForDetector = DatasetCatalog.register("nails_dataset", get_data)
-MetadataCatalog.get("nails_dataset").thing_classes = ["nail"]
+# datasetForDetector = DatasetCatalog.register("nails_dataset", get_data)
+# MetadataCatalog.get("nails_dataset").thing_classes = ["nail"]
 
 
 def train():
@@ -41,7 +41,7 @@ def train():
 
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
     trainer = DefaultTrainer(cfg)
-    trainer.resume_or_load(resume=False)
+    trainer.resume_or_load(resume=True)
     trainer.train()
 
 

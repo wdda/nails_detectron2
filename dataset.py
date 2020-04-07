@@ -20,54 +20,33 @@ class DataSet(object):
             self.imgs.append(img_name)
 
     def set(self):
-        images = []
-        annotations = []
+        dataset_dicts = []
 
         for index, img_name in enumerate(self.imgs):
-            img = cv2.imread(self.all_img_paths[index], cv2.IMREAD_UNCHANGED)
+            record = {}
 
-            images.append({
-                "file_name": img_name,
-                "height": img.shape[0],
-                "width": img.shape[1],
-                "id": index
-            })
+            img = cv2.imread(self.all_img_paths[index], cv2.IMREAD_UNCHANGED)
+            height, width = img.shape[:2]
+
+            record["file_name"] = self.all_img_paths[index]
+            record["height"] = height
+            record["width"] = width
 
             rows_by_img = self.data.loc[self.data['filename'] == img_name]
 
+            objs = []
             for index_row, row in rows_by_img.iterrows():
-                width = row['xmax'] - row['xmin']
-                height = row['ymax'] - row['ymin']
+                obj = {
+                    "bbox": [row['xmin'], row['ymin'], row['xmax'], row['ymax']],
+                    "bbox_mode": BoxMode.XYXY_ABS,
+                    "segmentation": [],
+                    "category_id": 0,
+                    "iscrowd": 0
+                }
+                objs.append(obj)
 
-                annotations.append({
-                    "id": 1,
-                    "box_mode": BoxMode.XYXY_ABS,
-                    "bbox": [
-                        row['xmin'],
-                        row['ymin'],
-                        width,
-                        height
+        record["annotations"] = objs
+        dataset_dicts.append(record)
 
-                    ],
-                    "image_id": index,
-                    "segmentation": [int(row['xmin']), int(row['ymin']), int(row['xmax']), int(row['ymax'])],
-                    "ignore": 0,
-                    "area": width * height,
-                    "iscrowd": 0,
-                    "category_id": 0
-                })
 
-        data = {
-            "type": "instances",
-            "images": images,
-            "categories": [
-                {
-                    "supercategory": "none",
-                    "name": "nail",
-                    "id": 0
-                },
-            ],
-            "annotations": annotations
-        }
-
-        return data
+        return dataset_dicts
