@@ -107,4 +107,5 @@ def test_video():
 
 
 # test_one_img('test3.jpg')
-test_video()
+# test_video()
+train()
