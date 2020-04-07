@@ -1,10 +1,8 @@
 import pandas as pd
 import glob
 import os
-import detectron2
 from detectron2.structures import BoxMode
 import cv2
-import json
 
 
 class DataSet(object):

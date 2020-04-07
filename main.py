@@ -5,7 +5,6 @@ from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog
 from detectron2.engine import DefaultTrainer
-from detectron2.utils.visualizer import ColorMode
 import os
 import random
 
@@ -68,4 +67,5 @@ def test_img():
         cv2.imshow('test', v.get_image()[:, :, ::-1])
         cv2.waitKey(0)
 
-test_img()
+
+train()
