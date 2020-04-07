@@ -70,4 +70,4 @@ class DataSet(object):
             "annotations": annotations
         }
 
-        return json.dumps(data)
+        return data
