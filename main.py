@@ -26,7 +26,7 @@ cfg.DATASETS.TEST = ("nail/test",)
 nail_metadata_test = MetadataCatalog.get(cfg.DATASETS.TEST[0])
 nail_metadata_test.set(thing_classes=["nail"])
 
-local_pre_train = "model_0004999.pth"
+local_pre_train = "model_final.pth"
 
 
 def get_data(folder):
@@ -106,6 +106,6 @@ def test_video():
     cv2.destroyAllWindows()
 
 
-# test_one_img('test3.jpg')
-test_video()
+test_one_img('test.jpg')
+# test_video()
 # train()

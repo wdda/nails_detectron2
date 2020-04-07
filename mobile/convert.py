@@ -1,7 +1,7 @@
 import torch
 import torchvision
 
-model = torch.load('../output/model_0009999.pth')
+model = torch.load('../output/model_final.pth')
 model.eval()
 example = torch.rand(1, 3, 224, 224)
 traced_script_module = torch.jit.trace(model, example)
