@@ -55,20 +55,17 @@ def test_img():
 
     dataset_dicts = get_data("test")
 
-    print(random.sample(dataset_dicts, 3))
+    for d in random.sample(dataset_dicts, 3):
+        im = cv2.imread(d["file_name"])
 
+        # Make prediction
+        outputs = predictor(im)
+        image = im[:, :, ::-1]
 
-''' for d in random.sample(dataset_dicts, 3):
-     im = cv2.imread(d["file_name"])
+        v = Visualizer(image, metadata=nail_metadata, scale=0.8)
+        v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
 
-     # Make prediction
-     outputs = predictor(im)
-     image = im[:, :, ::-1]
-
-     v = Visualizer(image, metadata=nail_metadata, scale=0.8, instance_mode=ColorMode.IMAGE_BW)
-     v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-
-     cv2.imshow('test', v.get_image()[:, :, ::-1])
-     cv2.waitKey(0)'''
+        cv2.imshow('test', v.get_image()[:, :, ::-1])
+        cv2.waitKey(0)
 
 test_img()

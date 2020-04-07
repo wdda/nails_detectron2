@@ -45,8 +45,7 @@ class DataSet(object):
                 }
                 objs.append(obj)
 
-        record["annotations"] = objs
-        dataset_dicts.append(record)
-
+            record["annotations"] = objs
+            dataset_dicts.append(record)
 
         return dataset_dicts
